@@ -1,0 +1,59 @@
+﻿<Application x:Class="JavaProject___Client.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:JavaProject___Client"
+             xmlns:viewModel="clr-namespace:JavaProject___Client.MVVM.ViewModel"
+             xmlns:view="clr-namespace:JavaProject___Client.MVVM.View"
+             xmlns:themes="clr-namespace:JavaProject___Client.Themes">
+
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Blue.xaml" />
+                <ResourceDictionary Source="./Themes/TopMenuButton.xaml"/>
+                <ResourceDictionary Source="./Themes/FriendItem.xaml"/>
+                <ResourceDictionary Source="./Themes/RequestItem.xaml"/>
+                <ResourceDictionary Source="./Themes/TweetItem.xaml"/>
+                <ResourceDictionary Source="./Themes/TweetBox.xaml"/>
+                <ResourceDictionary Source="./Themes/MenuButton.xaml"/>
+                <ResourceDictionary Source="./Themes/MenuButtonIcon.xaml"/>
+                <ResourceDictionary Source="./Themes/Scrollbar.xaml"/>
+                <ResourceDictionary Source="./Themes/MessageBox.xaml"/>
+                <ResourceDictionary Source="./Themes/ContactCard.xaml"/>
+                <ResourceDictionary Source="./Themes/ChatItem.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
+                <view:LoginView/>
+            </DataTemplate>
+
+            
+
+            <DataTemplate DataType="{x:Type viewModel:RegisterViewModel}">
+                <view:RegisterView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:HomeViewModelProfile}">
+                <view:HomeViewProfile/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:HomeViewModelUsers}">
+                <view:HomeViewUsers/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:HomeViewModelTweet}">
+                <view:HomeViewTweet/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModel:HomeViewModelSettings}">
+                <view:HomeViewSettings/>
+            </DataTemplate>
+
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

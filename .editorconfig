@@ -1,0 +1,22 @@
+﻿[*.cs]
+
+# CS8618: Null atanamaz alan, oluşturucudan çıkış yaparken null olmayan bir değer içermelidir. Alanı null atanabilir olarak bildirmeyi düşünün.
+dotnet_diagnostic.CS8618.severity = none
+
+# CS8612: Türdeki başvuru türlerinin boş değer atanabilirliği, örtük olarak uygulanan üye ile eşleşmiyor.
+dotnet_diagnostic.CS8612.severity = none
+
+# CS8767: Parametre türündeki başvuru türlerinin null atanabilirliği örtük olarak uygulanan üyeyle eşleşmiyor (muhtemelen null atanabilirlik öznitelikleri nedeniyle).
+dotnet_diagnostic.CS8767.severity = none
+
+# CS8625: Null sabit değer, boş değer atanamayan başvuru türüne dönüştürülemiyor.
+dotnet_diagnostic.CS8625.severity = none
+
+# CS8604: Olası null başvuru bağımsız değişkeni.
+dotnet_diagnostic.CS8604.severity = none
+
+# CS8622: Muhtemelen null atanabilirlik öznitelikleri nedeniyle, parametre türündeki başvuru türlerinin null atanabilirliği hedef temsilciyle eşleşmiyor.
+dotnet_diagnostic.CS8622.severity = none
+
+# CS8601: Olası null başvuru ataması.
+dotnet_diagnostic.CS8601.severity = silent

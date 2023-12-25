@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="JavaProject___Client.MVVM.View.test"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JavaProject___Client.MVVM.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" 
+             d:DesignHeight="625" d:DesignWidth="1200">
+    <Border Background="#cfd5e5" CornerRadius="50" BorderThickness="2" 
+            BorderBrush="#ebedf3" 
+            Padding="20" MouseDown="Border_MouseDown">
+        <Border CornerRadius="40">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#fefefe" Offset="0"/>
+                    <GradientStop Color="#ededef" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="260"/>
+                </Grid.ColumnDefinitions>
+
+                <Border CornerRadius="30" Background="#4E72AB" Margin="20">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Top">
+                            <Button Style="{StaticResource topMenuButton}" Background="#3F5C8A">
+                                <Icon:PackIconMaterial Kind="Turtle" Style="{StaticResource menuButtonIcon}"/>
+                            </Button>
+                            <Separator Background="#3F5C8A" Margin="20,0,20,10" Height="0.8"/>
+
+                            <Button Style="{StaticResource menuButton}" Background="#3F5C8A">
+                                <Icon:PackIconMaterial Kind="AccountGroup" Style="{StaticResource menuButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+
+                        <Separator Background="#3F5C8A" VerticalAlignment="Bottom" Margin="20,0,20,90" Height="0.8"/>
+
+                        <Button Style="{StaticResource topMenuButton}" VerticalAlignment="Bottom" Margin="0,0,0,25" 
+                                Background="#3F5C8A">
+                            <Icon:PackIconMaterial Kind="LocationExit" Style="{StaticResource menuButtonIcon}"/>
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+
+
+
+        </Border>
+    </Border>
+</UserControl>

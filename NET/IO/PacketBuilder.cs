@@ -2,23 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace JavaProject___Server.NET.IO
 {
-    internal class PacketBuilder
+    public class PacketBuilder
     {
         MemoryStream _ms;
-
         private object locker = new object();
         public PacketBuilder()
         {
             _ms = new MemoryStream();
         }
 
-        //Paketin ne tür olduğunu belirliyor
         public void WriteOpCode(byte opcode)
         {
             lock (locker)
@@ -26,10 +24,9 @@ namespace JavaProject___Server.NET.IO
                 _ms.WriteByte(opcode);
             }
         }
-
-        //Paketin içindeki mesajı yazıyor
         public void WriteMessage(string msg)
         {
+
             lock (locker)
             {
                 byte[] messageBytes = Encoding.UTF8.GetBytes(msg);
@@ -41,24 +38,20 @@ namespace JavaProject___Server.NET.IO
             //_ms.Write(buff, 0, buff.Length);
             //_ms.Write(Encoding.ASCII.GetBytes(msg), 0, msg.Length);
         }
-        public void WriteAudioMessage(byte[] msg, int startingIndex, int endingIndex)
-        {
-            lock (locker)
-            {
-                var msgLength = msg.Length;
 
-                _ms.Write(BitConverter.GetBytes(msgLength), 0, BitConverter.GetBytes(msg.Length).Length);
 
-                _ms.Write(msg, 0, msgLength);
-            }
-        }
         public byte[] GetPacketBytes()
         {
             lock (locker)
             {
-                var sendPacket = _ms.ToArray();
-                Clear(_ms);
-                return sendPacket;
+                var result = _ms.ToArray();
+
+                Task.Run(() =>
+                {
+                    Clear(_ms);
+                });
+
+                return result;
             }
         }
         public void Clear(MemoryStream source)
@@ -71,16 +64,15 @@ namespace JavaProject___Server.NET.IO
                 source.SetLength(0);
             }
         }
-
-        public void WriteScreenImageMessage(byte[] bitmap)
+        public void WriteAudioMessage(byte[] msg, int startingIndex, int bytesRecorded)
         {
             lock (locker)
             {
-                int imageLength = bitmap.Length;
+                var msgLength = msg.Length;
 
-                _ms.Write(BitConverter.GetBytes(imageLength), 0, BitConverter.GetBytes(imageLength).Length);
+                _ms.Write(BitConverter.GetBytes(msgLength), 0, BitConverter.GetBytes(msg.Length).Length);
 
-                _ms.Write(bitmap, 0, imageLength);
+                _ms.Write(msg, 0, bytesRecorded);
             }
         }
 

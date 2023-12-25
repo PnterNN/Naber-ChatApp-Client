@@ -1,0 +1,131 @@
+﻿<UserControl x:Class="JavaProject___Client.MVVM.View.HomeViewTweet"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:JavaProject___Client.MVVM.View"
+             mc:Ignorable="d" 
+             Background="Transparent"
+             d:DesignHeight="625" d:DesignWidth="1200">
+    <Grid>
+        <Border Background="#cfd5e5" CornerRadius="0,0,50,50" BorderThickness="2" 
+            BorderBrush="#ebedf3" 
+            Padding="20">
+            <Border CornerRadius="40">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#fefefe" Offset="0"/>
+                        <GradientStop Color="#ededef" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="260"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border CornerRadius="30" Background="#4E72AB" Margin="20">
+                        <Grid>
+                            <StackPanel VerticalAlignment="Top" Margin="0,20,0,0">
+                                <Button Style="{StaticResource topMenuButton}" Background="#3F5C8A" Command="{Binding NavigateToSettings}">
+                                    <Icon:PackIconMaterial Kind="Turtle" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
+                                <Separator Background="#3F5C8A" Margin="20,10,20,10" Height="0.8"/>
+
+                                <Button Style="{StaticResource menuButton}" Background="#3F5C8A" Command="{Binding NavigateToHomeUser}">
+                                    <Icon:PackIconMaterial Kind="AccountGroup" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
+                                <Button Style="{StaticResource menuButton}" Background="#3F5C8A" Command="{Binding NavigateToProfile}">
+                                    <Icon:PackIconMaterial Kind="Account" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
+                            </StackPanel>
+
+                            <Separator Background="#3F5C8A" VerticalAlignment="Bottom" Margin="20,0,20,90" Height="0.8"/>
+
+                            <Button Style="{StaticResource topMenuButton}" VerticalAlignment="Bottom" Margin="0,0,0,25" 
+                                Background="#3F5C8A">
+                                <Icon:PackIconMaterial Kind="LocationExit" Style="{StaticResource menuButtonIcon}"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="0,4*"/>
+                        </Grid.RowDefinitions>
+                        <Border Background="Transparent" 
+                                BorderBrush="Gray" BorderThickness="1,1,1,0"
+                                Margin="0,0,0,0"/>
+                        <Border Width="80" Height="80"
+                                Background="CornflowerBlue"
+                                CornerRadius="95"
+                                Margin="-650,0,0,0">
+                            <Ellipse Width="25" Height="25"
+                                    Fill="#EE5858" 
+                                    Margin="35,56,0,0">
+                            </Ellipse>
+                        </Border>
+                        <TextBox Grid.Row="0"
+                                 Height="40"
+                                 Width="630"
+                                 Margin="80,-20,0,0"
+                                 Text="{Binding Tweet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 Style="{StaticResource TweetBox}"
+                                 />
+                        
+                        <Button Margin="653,76,33,10" Width="80" Height="30" Style="{StaticResource menuButton}" Background="#4E72AB" Command="{Binding SendTweet}">
+                            <Icon:PackIconMaterial Kind="Send" Style="{StaticResource menuButtonIcon}"/>
+                        </Button>
+                        <Border Grid.Row="1" Background="Transparent" BorderBrush="Gray" BorderThickness="1"/>
+                        <ListView Grid.Column="1" x:Name="tweets" ItemsSource="{Binding Tweets, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  Grid.Row="1" Grid.ColumnSpan="2"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  ItemContainerStyle="{StaticResource TweetItem}"
+                                  Margin="80,0,0,0"
+                                  Height="410"
+                                  Width="630"/>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="350"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Background="Transparent" 
+                                BorderBrush="Gray" BorderThickness="0,0,0,1"
+                                Margin="0,0,0,0">
+                            <StackPanel>
+                                <Label Margin="10,10,0,0" Foreground="Black" Content="Friend Requests"/>
+                                <ListView x:Name="friendRequests" ItemsSource="{Binding FriendRequests, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                          Background="Transparent"
+                                          ItemContainerStyle="{StaticResource RequestItem}"
+                                          BorderThickness="0"
+                                          Margin="0,0,0,0"
+                                          Height="190"
+                                          Width="250"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Row="1">
+                            <StackPanel>
+                                <Label Margin="10,10,0,0" Foreground="Black" Content="Friends"/>
+                                <ListView x:Name="friends" ItemsSource="{Binding Friends, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                    Background="Transparent"
+                                    ItemContainerStyle="{StaticResource FriendItem}"
+                                    BorderThickness="0"
+                                    Margin="0,0,0,0"
+                                    Height="300"
+                                    Width="250"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+
+
+
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

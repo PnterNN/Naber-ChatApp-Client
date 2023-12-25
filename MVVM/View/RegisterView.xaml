@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="JavaProject___Client.MVVM.View.RegisterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JavaProject___Client.MVVM.View"
+             xmlns:themes="clr-namespace:JavaProject___Client.Themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="625" d:DesignWidth="1200"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             >
+    
+    <Grid>
+        <Border CornerRadius="0,0,50,50">
+            <Border.Background>
+                <ImageBrush ImageSource="/Assets/Loginbackground.png" Stretch="Fill"/>
+            </Border.Background>
+            <Grid>
+                <Image Source="/Assets/Registerlayer1.png" Stretch="Fill" 
+               Height="550" Width="300"
+               Margin="600,0,0,0"/>
+                <Image Source="/Assets/logo.png" Stretch="Fill"
+                       Width="500" Height="500" 
+                       Margin="550,0,0,0" Opacity="0.2"/>
+                <Image Source="/Assets/Loginlayer3.png" Stretch="Fill"
+               Height="550" Width="700"
+               Margin="-260,0,0,0"/>
+                <Image Source="/Assets/Registerlayer4.png" Stretch="Fill"
+               Height="450" Width="500"
+               Margin="505,205,0,0"/>
+
+                <Label Content="SIGN UP" 
+                       FontSize="28"
+                       HorizontalContentAlignment="Right"
+                       FontWeight="Bold"
+                       FontStretch="SemiExpanded"
+                       Width="300"
+                       Height="50"
+                       Margin="550,-400,0,0"/>
+                <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="-300,0,0,0">
+
+                    <Label FontSize="10" FontWeight="Medium"
+                           Height="20" Width="300"
+                           Foreground="#BF3131"
+                           Content="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <TextBox x:Name="UsernameBox" 
+                     Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                     Width="300" FontSize="18"
+                     Margin="0,25,0,0"
+                     BorderBrush="#4E72AB"
+                     materialDesign:HintAssist.Hint="Enter Username"
+                     materialDesign:HintAssist.FloatingOffset="-20,-40"
+                     materialDesign:HintAssist.Background="Transparent"
+                     BorderThickness="2"
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+                    <TextBox x:Name="EmailBox" 
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                     Width="300" FontSize="18" 
+                     materialDesign:HintAssist.Hint="Enter Email"
+                     materialDesign:HintAssist.FloatingOffset="-20,-40"
+                     materialDesign:HintAssist.Background="Transparent"
+                     Margin="0,25,0,0"
+                     BorderBrush="#4E72AB"
+                     BorderThickness="2"  
+                     Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
+                    <themes:CustomPasswordBox x:Name="PasswordBox" 
+                                      Margin="0,5,0,0"
+                                      Password="{Binding Password, UpdateSourceTrigger=PropertyChanged , Mode=TwoWay}"/>
+
+                    <Button  Margin="0,25,0,0" x:Name="loginBtn" 
+                     Style="{StaticResource MaterialDesignFlatMidBgButton}" 
+                     Height="53" Width="300" 
+                     Command="{Binding RegisterToServer}"
+                     IsEnabled="{Binding ButtonState}"
+                     Background="#4E72AB"
+                     BorderBrush="#4E72AB"
+                     materialDesign:ButtonAssist.CornerRadius="10" 
+                     FontSize="18" Content="REGISTER"></Button>
+
+                    <Button  Margin="0,20,0,0" x:Name="Navigatetologin" 
+                     Style="{StaticResource MaterialDesignFlatButton}" 
+                     Height="53" Width="300" 
+                     Foreground="#4E72AB"
+                     BorderBrush="#4E72AB"
+                     Command="{Binding NavigateToLogin}"
+                     materialDesign:ButtonAssist.CornerRadius="10" 
+                     FontSize="18" Content="SIGN IN"></Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

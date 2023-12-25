@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <RootNamespace>Naber</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MVVM\Mediator\**" />
+    <EmbeddedResource Remove="MVVM\Mediator\**" />
+    <None Remove="MVVM\Mediator\**" />
+    <Page Remove="MVVM\Mediator\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\chat.png" />
+    <None Remove="Assets\deleteMessage.png" />
+    <None Remove="Assets\home.png" />
+    <None Remove="Assets\Loginbackground.png" />
+    <None Remove="Assets\Loginlayer2.png" />
+    <None Remove="Assets\Loginlayer3.png" />
+    <None Remove="Assets\Loginlayer4.png" />
+    <None Remove="Assets\Loginlayer5.png" />
+    <None Remove="Assets\logo.png" />
+    <None Remove="Assets\logo2.png" />
+    <None Remove="Assets\notification.wav" />
+    <None Remove="Assets\Registerlayer1.png" />
+    <None Remove="Assets\Registerlayer4.png" />
+    <None Remove="Assets\Userlayer1.png" />
+    <None Remove="MVVM\View\chat.png" />
+    <None Remove="MVVM\View\deleteMessage.png" />
+    <None Remove="MVVM\View\home.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Loginlayer2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Localizr.Extensions.Microsoft.DependencyInjection" Version="1.1.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\chat.png" />
+    <Resource Include="Assets\deleteMessage.png" />
+    <Resource Include="Assets\home.png" />
+    <Resource Include="Assets\Loginbackground.png" />
+    <Resource Include="Assets\Loginlayer3.png" />
+    <Resource Include="Assets\Loginlayer4.png" />
+    <Resource Include="Assets\Loginlayer5.png" />
+    <Resource Include="Assets\logo.png" />
+    <Resource Include="Assets\logo2.png" />
+    <Resource Include="Assets\notification.wav" />
+    <Resource Include="Assets\Registerlayer1.png" />
+    <Resource Include="Assets\Registerlayer4.png" />
+    <Resource Include="Assets\Userlayer1.png" />
+  </ItemGroup>
+
+</Project>
