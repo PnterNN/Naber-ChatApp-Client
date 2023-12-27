@@ -9,15 +9,15 @@
              Background="Transparent"
              d:DesignHeight="625" d:DesignWidth="1200">
     <Grid>
-        <Border Background="#cfd5e5" CornerRadius="0,0,50,50" BorderThickness="2" 
-            BorderBrush="#ebedf3" 
+        <Border CornerRadius="0,0,10,10" 
+            BorderBrush="#ebedf3"
             Padding="20">
-            <Border CornerRadius="40">
+            <Border.Background>
+                <ImageBrush ImageSource="/Assets/Loginbackground.png" Stretch="Fill"/>
+            </Border.Background>
+            <Border CornerRadius="10">
                 <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#fefefe" Offset="0"/>
-                        <GradientStop Color="#ededef" Offset="1"/>
-                    </LinearGradientBrush>
+                    <ImageBrush ImageSource="/Assets/globallayer1.png" Stretch="Fill"/>
                 </Border.Background>
 
                 <Grid>
@@ -27,7 +27,7 @@
                         <ColumnDefinition Width="260"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border CornerRadius="30" Background="#4E72AB" Margin="20">
+                    <Border CornerRadius="10" Background="#4E72AB" Margin="20">
                         <Grid>
                             <StackPanel VerticalAlignment="Top" Margin="0,20,0,0">
                                 <Button Style="{StaticResource topMenuButton}" Background="#3F5C8A" Command="{Binding NavigateToSettings}">
@@ -41,11 +41,12 @@
                                 <Button Style="{StaticResource menuButton}" Background="#3F5C8A" Command="{Binding NavigateToProfile}">
                                     <Icon:PackIconMaterial Kind="Account" Style="{StaticResource menuButtonIcon}"/>
                                 </Button>
+                                
                             </StackPanel>
 
                             <Separator Background="#3F5C8A" VerticalAlignment="Bottom" Margin="20,0,20,90" Height="0.8"/>
 
-                            <Button Style="{StaticResource topMenuButton}" VerticalAlignment="Bottom" Margin="0,0,0,25" 
+                            <Button Style="{StaticResource topMenuButton}"  Command="{Binding ApplicationExit}" VerticalAlignment="Bottom" Margin="0,0,0,25" 
                                 Background="#3F5C8A">
                                 <Icon:PackIconMaterial Kind="LocationExit" Style="{StaticResource menuButtonIcon}"/>
                             </Button>
@@ -53,16 +54,16 @@
                     </Border>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="0,4*"/>
+                            <RowDefinition Height="117*"/>
+                            <RowDefinition Height="68*"/>
+                            <RowDefinition Height="400*"/>
                         </Grid.RowDefinitions>
                         <Border Background="Transparent" 
-                                BorderBrush="Gray" BorderThickness="1,1,1,0"
-                                Margin="0,0,0,0"/>
+                                BorderBrush="Gray" BorderThickness="1,1,1,0"/>
                         <Border Width="80" Height="80"
                                 Background="CornflowerBlue"
                                 CornerRadius="95"
-                                Margin="-650,0,0,0">
+                                Margin="20,18,670,19">
                             <Ellipse Width="25" Height="25"
                                     Fill="#EE5858" 
                                     Margin="35,56,0,0">
@@ -71,23 +72,23 @@
                         <TextBox Grid.Row="0"
                                  Height="40"
                                  Width="630"
-                                 Margin="80,-20,0,0"
+                                 Margin="110,28,30,49"
                                  Text="{Binding Tweet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                  Style="{StaticResource TweetBox}"
                                  />
-                        
-                        <Button Margin="653,76,33,10" Width="80" Height="30" Style="{StaticResource menuButton}" Background="#4E72AB" Command="{Binding SendTweet}">
+
+                        <Button Margin="655,76,35,11" Width="80" Height="30"  Style="{StaticResource menuButton}" Background="#4E72AB" Command="{Binding SendTweet}">
                             <Icon:PackIconMaterial Kind="Send" Style="{StaticResource menuButtonIcon}"/>
                         </Button>
-                        <Border Grid.Row="1" Background="Transparent" BorderBrush="Gray" BorderThickness="1"/>
-                        <ListView Grid.Column="1" x:Name="tweets" ItemsSource="{Binding Tweets, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  Grid.Row="1" Grid.ColumnSpan="2"
+                        <Border Grid.Row="1" Background="Transparent" BorderBrush="Gray" BorderThickness="1" Grid.RowSpan="2"/>
+                        <ListView x:Name="tweets" ItemsSource="{Binding Tweets, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  Grid.Row="1"
                                   Background="Transparent"
                                   BorderThickness="0"
                                   ItemContainerStyle="{StaticResource TweetItem}"
-                                  Margin="80,0,0,0"
+                                  Margin="110,29,30,29"
                                   Height="410"
-                                  Width="630"/>
+                                  Width="630" Grid.RowSpan="2"/>
                     </Grid>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>

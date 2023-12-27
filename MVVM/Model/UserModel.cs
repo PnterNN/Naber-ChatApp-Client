@@ -9,10 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace JavaProject___Client.MVVM.Model
 {
-    public class UserModel
+    public class UserModel : ObservableObject
     {
         private IDataService dataService { get; set; }
         private INavigationService navigationService { get; set; }
@@ -56,7 +57,7 @@ namespace JavaProject___Client.MVVM.Model
 
             FriendRequest = new RelayCommand(o =>
             {
-                
+
             });
             FriendRemove = new RelayCommand(o =>
             {
@@ -105,5 +106,19 @@ namespace JavaProject___Client.MVVM.Model
         public ObservableCollection<MessageModel> Messages { get; set; }
         public ObservableCollection<TweetModel> Tweets { get; set; }
         public MessageModel LastMessage => Messages.Last();
+        public string LastMessageText 
+        {
+            get 
+            {
+                if (Messages.Last().Message.Length > 25)
+                {
+                    return Messages.Last().Message.Substring(0,25) + " ...";
+                }
+                else
+                {
+                    return Messages.Last().Message;
+                }
+            }
+        }
     }
 }

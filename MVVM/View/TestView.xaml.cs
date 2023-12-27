@@ -18,9 +18,9 @@ namespace JavaProject___Client.MVVM.View
     /// <summary>
     /// test.xaml etkileşim mantığı
     /// </summary>
-    public partial class test : UserControl
+    public partial class TestView : UserControl
     {
-        public test()
+        public TestView()
         {
             InitializeComponent();
         }

@@ -31,7 +31,10 @@
                 <view:LoginView/>
             </DataTemplate>
 
-            
+            <DataTemplate DataType="{x:Type viewModel:TestViewModel}">
+                <view:TestView/>
+            </DataTemplate>
+
 
             <DataTemplate DataType="{x:Type viewModel:RegisterViewModel}">
                 <view:RegisterView/>
@@ -48,6 +51,8 @@
             <DataTemplate DataType="{x:Type viewModel:HomeViewModelTweet}">
                 <view:HomeViewTweet/>
             </DataTemplate>
+            
+            
 
             <DataTemplate DataType="{x:Type viewModel:HomeViewModelSettings}">
                 <view:HomeViewSettings/>

@@ -24,11 +24,8 @@
                                    VerticalAlignment="Center"/>
                             </StackPanel>
                             <StackPanel>
-                                <Label Content="{Binding Message}"
-                                   Foreground="White"
-                                   FontWeight="Medium"
-                                   VerticalAlignment="Center">
-                                </Label>
+                                <TextBlock Margin="3,0,0,0" Text="{Binding Message}" Foreground="Gray" TextWrapping="Wrap" 
+                                       FontWeight="Medium" VerticalAlignment="Center"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -37,21 +34,18 @@
         </Setter>
         <Style.Resources>
             <ControlTemplate x:Key="CustomRow" >
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding Message}"
-                           Foreground="White"
-                           FontWeight="Medium"
-                           Margin="30,-2,0,-2"/>
+                <StackPanel Margin="32,0,0,0" Orientation="Horizontal">
+                    <TextBlock Text="{Binding Message}" Foreground="Gray" TextWrapping="Wrap" 
+                                       FontWeight="Medium" VerticalAlignment="Center"/>
                 </StackPanel>
             </ControlTemplate>
             <ControlTemplate x:Key="DeleteMessageRowANDCustomRow" >
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding Message}"
-                           Foreground="White"
-                           FontWeight="Medium"
-                           Margin="30,-2,0,-2"/>
-                    <Border Width="75" Height="25" 
+                    <TextBlock Margin="32,0,0,0" Text="{Binding Message}" Foreground="Gray" TextWrapping="Wrap" 
+                                       FontWeight="Medium" VerticalAlignment="Center"/>
+                    <Border Margin="5,0,0,0" Width="75" Height="25" 
                             Background="#DA373C" 
+                            HorizontalAlignment="Left"
                             BorderBrush="#2B2D31" 
                             BorderThickness="3" 
                             CornerRadius="3">
@@ -93,17 +87,15 @@
                         </StackPanel>
 
                         <StackPanel>
-                            <Label Content="{Binding Message}"
-                                   Foreground="White"
-                                   FontWeight="Medium"
-                                   VerticalAlignment="Center">
-                            </Label>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding Message}" Foreground="Gray" TextWrapping="Wrap" 
+                                       FontWeight="Medium" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                     <Border Width="75" Height="25" 
                             Margin="0,25,0,0"
                             Background="#DA373C" 
                             BorderBrush="#2B2D31" 
+                            HorizontalAlignment="Left"
                             BorderThickness="3" 
                             CornerRadius="3">
                         <StackPanel>

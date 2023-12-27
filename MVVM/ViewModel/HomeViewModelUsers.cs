@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Windows.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -131,7 +132,7 @@ namespace JavaProject___Client.MVVM.ViewModel
                             ImageSource = "",
                             ownMessage = ownMessage,
                             UsernameColor = "CornflowerBlue",
-                            Message = dataMessage,
+                            Message = formattedString(dataMessage),
                             UID = messageUID,
                             Time = dataTime,
                             FirstMessage = dataFirstMessage
@@ -193,7 +194,7 @@ namespace JavaProject___Client.MVVM.ViewModel
                         ownMessage = false,
                         UsernameColor = "CornflowerBlue",
                         UID = messageUID,
-                        Message = msg,
+                        Message = formattedString(msg),
                         Time = DateTime.Now,
                         FirstMessage = FirstMessage
                     });
@@ -209,6 +210,7 @@ namespace JavaProject___Client.MVVM.ViewModel
 
                         }
                     }
+                    OnPropertyChanged("LastMessageText");
                 });
             }
         }
@@ -281,6 +283,21 @@ namespace JavaProject___Client.MVVM.ViewModel
             }
         }
 
+        public RelayCommand NavigateToTweet { get; set; }
+        public RelayCommand NavigateToProfile { get; set; }
+        public RelayCommand NavigateToSettings { get; set; }
+
+        public RelayCommand ApplicationExit { get; set; }
+
+        static string formattedString(string originalString)
+        {
+            for (int i = 99; i < originalString.Length; i += 100)
+            {
+                originalString = originalString.Insert(i, "\n");
+            }
+            return originalString;
+        }
+
         public HomeViewModelUsers(INavigationService navService, IDataService dataservice)
         {
             
@@ -289,11 +306,50 @@ namespace JavaProject___Client.MVVM.ViewModel
             _server = dataservice.server;
             Username = dataservice.Username;
             UID = dataservice.UID;
-
-            NavigateToHome = new RelayCommand(o =>
+            NavigateToTweet = new RelayCommand(o =>
             {
+
                 Navigation.NavigateTo<HomeViewModelTweet>();
             });
+
+            ApplicationExit = new RelayCommand(o =>
+            {
+                Application.Current.Shutdown();
+            });
+
+            NavigateToProfile = new RelayCommand(o =>
+            {
+                dataservice.ProfileUser.Username = dataservice.Username;
+                foreach (var tweet in dataservice.Tweets)
+                {
+                    if (tweet.Username == dataservice.Username)
+                    {
+                        dataservice.ProfileUser.Tweets.Add(tweet);
+                    }
+                }
+                Navigation.NavigateTo<HomeViewModelProfile>();
+            });
+
+            NavigateToSettings = new RelayCommand(o =>
+            {
+                Navigation.NavigateTo<HomeViewModelSettings>();
+            });
+
+            
+            MessageModel message = new MessageModel(navService, dataservice);
+            message.Message = "Merhaba, benim adım " + dataservice.Username + ". Sana nasıl yardımcı olabilirim?";
+            message.ownMessage = true;
+            message.FirstMessage = true;
+            message.Username = dataservice.Username;
+            message.Time = DateTime.Now;
+            
+
+            UserModel user = new UserModel(navService, dataservice);
+            user.Username = "Test1";
+            user.Messages = new ObservableCollection<MessageModel>();
+            user.Messages.Add(message);
+
+            Application.Current.Dispatcher.Invoke(() => DataService.Users.Add(user));
 
             SendMessageCommand = new RelayCommand(o =>
                 {
@@ -315,7 +371,6 @@ namespace JavaProject___Client.MVVM.ViewModel
                             {
                                 FirstMessage = true;
                             }
-                            
                             SelectedUser.Messages.Add(new MessageModel(Navigation, DataService)
                             {
                                 Username = dataservice.Username,
@@ -323,13 +378,14 @@ namespace JavaProject___Client.MVVM.ViewModel
                                 UID = messageUID.ToString(),
                                 ownMessage = true,
                                 UsernameColor = "CornflowerBlue",
-                                Message = Message,
+                                Message = formattedString(Message),
                                 Time = DateTime.Now,
                                 FirstMessage = FirstMessage
                             });
                             _server.SendMessage(Message, SelectedUser.UID, FirstMessage.ToString(), messageUID.ToString());
                         }
                         Message = "";
+                        OnPropertyChanged("LastMessageText");
                     }
                 });
 

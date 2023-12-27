@@ -29,6 +29,7 @@ namespace JavaProject___Client
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginViewModel>();
             services.AddSingleton<RegisterViewModel>();
+            services.AddSingleton<TestViewModel>();
 
             services.AddSingleton<HomeViewModelSettings>();
             services.AddSingleton<HomeViewModelTweet>();

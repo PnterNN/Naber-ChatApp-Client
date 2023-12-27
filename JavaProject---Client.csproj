@@ -19,6 +19,7 @@
   <ItemGroup>
     <None Remove="Assets\chat.png" />
     <None Remove="Assets\deleteMessage.png" />
+    <None Remove="Assets\globallayer1.png" />
     <None Remove="Assets\home.png" />
     <None Remove="Assets\Loginbackground.png" />
     <None Remove="Assets\Loginlayer2.png" />
@@ -41,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\globallayer1.png" />
     <Resource Include="Assets\Loginlayer2.png" />
   </ItemGroup>
 

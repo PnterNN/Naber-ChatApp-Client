@@ -95,6 +95,10 @@ namespace JavaProject___Client.MVVM.ViewModel
 
         public RelayCommand SendTweet { get; set; }
 
+        public RelayCommand ApplicationExit { get; set; }
+
+        public RelayCommand NavigateToTest { get; set; }
+
         public void tweetReceivedEvent()
         {
             var username = _server.PacketReader.ReadMessage();
@@ -260,7 +264,6 @@ namespace JavaProject___Client.MVVM.ViewModel
                 var username = _server.PacketReader.ReadMessage();
                 var ownRequest = bool.Parse(_server.PacketReader.ReadMessage());
                 var state = bool.Parse(_server.PacketReader.ReadMessage());
-                MessageBox.Show(username + " " + state);
                 UserModel user = new UserModel(Navigation, DataService);
                 user.Username = username;
                 if (state == true)
@@ -315,6 +318,11 @@ namespace JavaProject___Client.MVVM.ViewModel
             Friends = new ObservableCollection<UserModel>();
             Tweets = new ObservableCollection<TweetModel>();
 
+            ApplicationExit = new RelayCommand(o =>
+            {
+                Application.Current.Shutdown();
+            });
+
             SendTweet = new RelayCommand(o =>
             {
                 if (Tweet != null || Tweet == "")
@@ -324,6 +332,12 @@ namespace JavaProject___Client.MVVM.ViewModel
                     dataservice.server.SendTweet(Tweet, tweetUID.ToString());
                     Tweet = "";
                 }
+            });
+
+            NavigateToTest = new RelayCommand(o =>
+            {
+                
+                Navigation.NavigateTo<TestViewModel>();
             });
 
             NavigateToProfile = new RelayCommand(o =>
