@@ -24,6 +24,8 @@ namespace JavaProject___Client.MVVM.Model
         public RelayCommand FriendRemove { get; set; }
         public RelayCommand FriendRequestRemove { get; set; }
         public RelayCommand GoToProfile { get; set; }
+
+        public RelayCommand ChatFriend { get; set; }
         public UserModel(INavigationService navService, IDataService dataservice)
         {
             dataService = dataservice;
@@ -55,6 +57,7 @@ namespace JavaProject___Client.MVVM.Model
                 }
             });
 
+
             FriendRequest = new RelayCommand(o =>
             {
 
@@ -84,6 +87,8 @@ namespace JavaProject___Client.MVVM.Model
                 }
             });
 
+
+
             GoToProfile = new RelayCommand(o =>
             {
                 foreach (var tweet in dataService.Tweets)
@@ -94,12 +99,27 @@ namespace JavaProject___Client.MVVM.Model
                     }
                 }
                 dataService.ProfileUser.Username = Username;
+                dataService.ProfileUser.Status = Status;
                 navigationService.NavigateTo<HomeViewModelProfile>();
             });
         }
 
         public string Username { get; set; }
         public string UID { get; set; }
+
+        public bool? _status;
+        public bool? Status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                _status = value;
+                OnPropertyChanged();
+            }
+        }
         public List<UserModel> Friends { get; set; }
         public bool? ownRequest { get; set; }
         public string ImageSource { get; set; }

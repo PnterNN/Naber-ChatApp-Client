@@ -14,8 +14,11 @@ namespace JavaProject___Client.Services
     {
         public string Username { get; set; }
         public string UID { get; set; }
-        public string MicrophoneDevice { get; set; }
-        public string SpeakerDevice { get; set; }
+        public int MicrophoneDevice { get; set; }
+        public int SpeakerDevice { get; set; }
+
+        public bool voiceButtonEnabled { get; set; }
+
         public UserModel SelectedUser { get; set; }
         public UserModel ProfileUser { get; set; }
         public ObservableCollection<UserModel> Users { get; set; }
@@ -31,8 +34,20 @@ namespace JavaProject___Client.Services
         public Server server { get; set; }
         public string UID { get; set; }
 
-        public string MicrophoneDevice { get; set; }
-        public string SpeakerDevice { get; set; }
+        public int MicrophoneDevice { get; set; }
+        public int SpeakerDevice { get; set; }
+
+        public bool voiceButtonEnabled 
+        {
+            get
+            {
+                if (MicrophoneDevice != -1 && SelectedUser != null)
+                    return true;
+                else
+                    return false;
+            }
+            set{}
+        }
 
         public UserModel ProfileUser { get; set; }
         public UserModel SelectedUser { get; set; }

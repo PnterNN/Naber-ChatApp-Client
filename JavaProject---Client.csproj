@@ -47,6 +47,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="GroovyG729" Version="0.1.2" />
+    <PackageReference Include="GroovyMp3" Version="0.1.3" />
     <PackageReference Include="Localizr.Extensions.Microsoft.DependencyInjection" Version="1.1.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
@@ -68,6 +70,10 @@
     <Resource Include="Assets\Registerlayer1.png" />
     <Resource Include="Assets\Registerlayer4.png" />
     <Resource Include="Assets\Userlayer1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Cache\Voices\" />
   </ItemGroup>
 
 </Project>

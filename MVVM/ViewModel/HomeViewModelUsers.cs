@@ -18,11 +18,20 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using GroovyCodecs.G729;
+using NAudio.Wave;
+using NAudio.CoreAudioApi;
+using System.IO;
 
 namespace JavaProject___Client.MVVM.ViewModel
 {
     internal class HomeViewModelUsers : Core.ViewModel
     {
+
+        private static G729Encoder enkoder;
+        private static G729Decoder dekoder;
+        private WaveFileWriter waveWriter;
+        private WasapiCapture waveIn;
 
         public IDataService DataService { get; set; }
 
@@ -54,6 +63,9 @@ namespace JavaProject___Client.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
+
+
+
         private UserModel _selectedUser;
         public UserModel SelectedUser
         {
@@ -63,21 +75,53 @@ namespace JavaProject___Client.MVVM.ViewModel
             }
             set
             {
+
                 _selectedUser = value;
                 DataService.SelectedUser = value;
+                VoiceButtonEnabled = true;
                 OnPropertyChanged();
             }
         }
-        private bool _microphone;
-        public bool Microphone
+        private string _voiceButtonColor;
+
+        public string VoiceButtonColor
         {
-            get { return _microphone; }
+            get
+            {
+                return _voiceButtonColor;
+            }
             set
             {
-                _microphone = value;
+                _voiceButtonColor = value;
                 OnPropertyChanged();
             }
         }
+
+        private string _voiceButtonContent;
+        public string VoiceButtonContent
+        {
+            get
+            {
+                return _voiceButtonContent;
+            }
+            set
+            {
+                _voiceButtonContent = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool VoiceButtonEnabled
+        {
+            get
+            {
+                return DataService.voiceButtonEnabled;
+            }
+            set
+            {
+                OnPropertyChanged();
+            }
+        }
+
         private string _message;
         public string Message
         {
@@ -85,6 +129,7 @@ namespace JavaProject___Client.MVVM.ViewModel
             set
             {
                 _message = value;
+                VoiceButtonEnabled = true;
                 OnPropertyChanged();
             }
         }
@@ -101,6 +146,7 @@ namespace JavaProject___Client.MVVM.ViewModel
                 UID = uid,
                 Messages = new ObservableCollection<MessageModel>()
             };
+            user.Status = true;
             string dataUsername = "";
             string dataUID = "";
             string dataImageSource = "";
@@ -255,12 +301,19 @@ namespace JavaProject___Client.MVVM.ViewModel
 
         private void UserDisconnected()
         {
+            
             var uid = _server.PacketReader.ReadMessage();
             var user = DataService.Users.FirstOrDefault(x => x.UID == uid);
+            if(user != null)
+            {
+                user.Status = false;
+            }
+            /*
             if (user != null)
             {
                 Application.Current.Dispatcher.Invoke(() => DataService.Users.Remove(user));
             }
+            */
         }
         public RelayCommand SendMessageCommand { get; set; }
 
@@ -286,8 +339,8 @@ namespace JavaProject___Client.MVVM.ViewModel
         public RelayCommand NavigateToTweet { get; set; }
         public RelayCommand NavigateToProfile { get; set; }
         public RelayCommand NavigateToSettings { get; set; }
-
         public RelayCommand ApplicationExit { get; set; }
+        public RelayCommand VoiceButtonCommand { get; set; }
 
         static string formattedString(string originalString)
         {
@@ -298,6 +351,72 @@ namespace JavaProject___Client.MVVM.ViewModel
             return originalString;
         }
 
+
+        private void csvToWav()
+        {
+            enkoder = new G729Encoder();
+            dekoder = new G729Decoder();
+
+            StreamReader st = new StreamReader("test.csv");
+            string sesdos = st.ReadLine();
+            st.Close();
+            string[] sesdizi = sesdos.Split(',');
+
+            List<byte> baytListe = new List<byte>();
+            foreach (string deger in sesdizi)
+            {
+                if (byte.TryParse(deger, out byte sonuc))
+                {
+                    baytListe.Add(sonuc);
+                }
+                else
+                {
+                    // Dönüşüm başarısız olduğunda yapılacak işlemi burada ayarlayabilirsiniz, örneğin bir hata mesajı yazdırabilirsiniz.
+                }
+            }
+
+            byte[] baytDizisi = baytListe.ToArray();
+            byte[] baytDizisi2 = dekoder.Process(baytDizisi);
+
+            WaveFormat waveFormat = new WaveFormat(44100, 1);
+            waveWriter = new WaveFileWriter("test2.wav", waveFormat);
+            waveWriter.Write(baytDizisi2, 0, baytDizisi2.Length);
+            waveWriter.Close();
+        }
+
+        private void wavToCsv()
+        {
+            enkoder = new G729Encoder();
+            dekoder = new G729Decoder();
+
+            var audioFile = new GroovyCodecs.WavFile.WavReader();
+            audioFile.OpenFile("test.wav");
+            var srcFormat = audioFile.GetFormat();
+            var inBuffer = audioFile.readWav();
+
+
+            byte[] baytdizi2 = enkoder.Process(inBuffer);
+
+            StreamWriter stwr = new StreamWriter("test.csv");
+            string sesdos = "";
+            for (long sayac = 0; sayac < baytdizi2.Length; sayac++)
+            {
+                sesdos = sesdos + baytdizi2[sayac].ToString() + ",";
+            }
+            sesdos = sesdos + "B";
+            stwr.Write(sesdos);
+            stwr.Close();
+        }
+
+        private void OnDataAvailable(object sender, WaveInEventArgs e)
+        {
+            if (VoiceButtonContent == "Stop Voice")
+            {
+                waveWriter.Write(e.Buffer, 0, e.BytesRecorded);
+            }
+        }
+
+
         public HomeViewModelUsers(INavigationService navService, IDataService dataservice)
         {
             
@@ -306,6 +425,10 @@ namespace JavaProject___Client.MVVM.ViewModel
             _server = dataservice.server;
             Username = dataservice.Username;
             UID = dataservice.UID;
+
+            VoiceButtonContent = "Start Voice";
+            VoiceButtonColor = "#4E72AB";
+
             NavigateToTweet = new RelayCommand(o =>
             {
 
@@ -315,6 +438,43 @@ namespace JavaProject___Client.MVVM.ViewModel
             ApplicationExit = new RelayCommand(o =>
             {
                 Application.Current.Shutdown();
+            });
+
+            VoiceButtonCommand = new RelayCommand(o =>
+            {
+                if (VoiceButtonContent == "Start Voice")
+                {
+                    VoiceButtonContent = "Stop Voice";
+                    VoiceButtonColor = "#BE3144";
+
+
+                    var enumerator = new MMDeviceEnumerator();
+                    var device = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ElementAt(DataService.MicrophoneDevice);
+                    waveIn = new WasapiCapture(device);
+
+                    WaveFormat waveFormat = new WaveFormat(44100, 1);
+                    waveIn.WaveFormat = waveFormat;
+                    waveIn.DataAvailable += OnDataAvailable;
+                    waveWriter = new WaveFileWriter("test.wav", waveFormat);
+                    waveIn.StartRecording();
+
+                }
+                else
+                {
+                    VoiceButtonContent = "Start Voice";
+                    VoiceButtonColor = "#4E72AB";
+
+                    waveIn.StopRecording();
+
+                    waveWriter.Close();
+                    waveWriter = null;
+                    waveIn.Dispose();
+                    wavToCsv();
+
+                    Task.Delay(1000).Wait();
+                    csvToWav();
+                }
+
             });
 
             NavigateToProfile = new RelayCommand(o =>
@@ -335,21 +495,6 @@ namespace JavaProject___Client.MVVM.ViewModel
                 Navigation.NavigateTo<HomeViewModelSettings>();
             });
 
-            
-            MessageModel message = new MessageModel(navService, dataservice);
-            message.Message = "Merhaba, benim adım " + dataservice.Username + ". Sana nasıl yardımcı olabilirim?";
-            message.ownMessage = true;
-            message.FirstMessage = true;
-            message.Username = dataservice.Username;
-            message.Time = DateTime.Now;
-            
-
-            UserModel user = new UserModel(navService, dataservice);
-            user.Username = "Test1";
-            user.Messages = new ObservableCollection<MessageModel>();
-            user.Messages.Add(message);
-
-            Application.Current.Dispatcher.Invoke(() => DataService.Users.Add(user));
 
             SendMessageCommand = new RelayCommand(o =>
                 {

@@ -9,82 +9,95 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DesignHeight="625" d:DesignWidth="1200">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="0,2*"/>
-        </Grid.RowDefinitions>
-
-        <Border Background="#4E72AB" CornerRadius="0,0,0,0"/>
-        <Button Margin="-1110,-110,0,0" Style="{StaticResource menuButton}" Background="#3F5C8A" Command="{Binding NavigateToBack}">
-            <Icon:PackIconMaterial Kind="Backspace" Style="{StaticResource menuButtonIcon}"/>
-        </Button>
-        <Image Source="/Assets/logo.png" Stretch="Fill" 
-               Height="400" Width="400"
-               Opacity="0.2" Margin="950,-30,0,0"/> 
-        <StackPanel Orientation="Horizontal"
+       
+        <Border CornerRadius="0,0,10,10" 
+            BorderBrush="#ebedf3"
+            Padding="20">
+            <Border.Background>
+                <ImageBrush ImageSource="/Assets/Loginbackground.png" Stretch="Fill"/>
+            </Border.Background>
+            <Border CornerRadius="10">
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0,410"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="#4E72AB" CornerRadius="10,10,0,0"/>
+                    <Button Margin="-1090,-100,0,0" Style="{StaticResource menuButton}" Background="#3F5C8A" Command="{Binding NavigateToBack}">
+                        <Icon:PackIconMaterial Kind="Backspace" Style="{StaticResource menuButtonIcon}"/>
+                    </Button>
+                    <Image Source="/Assets/logo.png" Stretch="Fill" 
+               Height="300" Width="300"
+               Opacity="0.2" Margin="950,-30,0,0"/>
+                    <StackPanel Orientation="Horizontal"
                                     Margin="80,0,0,0">
-            <Border Width="100" Height="100"
+                        <Border Width="100" Height="100"
                                     Background="CornflowerBlue"
                                     CornerRadius="95">
-                <Ellipse Width="30" Height="30"
+                            <Ellipse Width="30" Height="30"
                                     Fill="#EE5858" 
                                     Margin="55,69,0,0">
-                </Ellipse>
-            </Border>
-            <StackPanel>
-                <Label Content="{Binding ProfileUser.Username}" Margin="20,80,0,0"
+                            </Ellipse>
+                        </Border>
+                        <StackPanel>
+                            <Label Content="{Binding ProfileUser.Username}" Margin="20,80,0,0"
                        FontSize="20"
                        Foreground="White"/>
-            </StackPanel>
+                        </StackPanel>
 
-        </StackPanel>
-        <Grid Grid.Row="1" >
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="347.222"/>
-            </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="#4E72AB"/>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="0,1*"/>
-                    <ColumnDefinition Width="0,1*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Label Content="Friends" HorizontalContentAlignment="Center" Height="40" Width="380" Foreground="#FFFFFF" FontSize="20" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <Grid Grid.Row="1" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="347.222"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Background="#4E72AB"/>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0,1*"/>
+                                <ColumnDefinition Width="0,1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <Label Content="Friends" HorizontalContentAlignment="Center" Height="40" Width="380" Foreground="#FFFFFF" FontSize="20" Margin="10,0,0,0"/>
 
-                </StackPanel>
+                            </StackPanel>
 
-                <Separator Grid.Column="1" BorderBrush="#74AAFF" BorderThickness="2" HorizontalAlignment="Left" Margin="399,2,0,2">
-                    <Separator.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Separator.LayoutTransform>
+                            <Separator Grid.Column="1" BorderBrush="#74AAFF" BorderThickness="2" HorizontalAlignment="Left" Margin="399,2,0,2">
+                                <Separator.LayoutTransform>
+                                    <RotateTransform Angle="90"/>
+                                </Separator.LayoutTransform>
 
-                </Separator>
+                            </Separator>
 
-                <StackPanel Grid.Column="1">
-                    <Label Content="Posts" HorizontalContentAlignment="Center" Height="40" Width="380" Foreground="#FFFFFF" FontSize="20" Margin="10,15,0,0"/>
+                            <StackPanel Grid.Column="1">
+                                <Label Content="Posts" HorizontalContentAlignment="Center" Height="40" Width="380" Foreground="#FFFFFF" FontSize="20" Margin="10,15,0,0"/>
 
-                </StackPanel>
-                <Separator BorderBrush="#74AAFF" BorderThickness="2" HorizontalAlignment="Left" Margin="399,2,0,2">
-                    <Separator.LayoutTransform>
-                        <RotateTransform Angle="90"/>
-                    </Separator.LayoutTransform>
+                            </StackPanel>
+                            <Separator BorderBrush="#74AAFF" BorderThickness="2" HorizontalAlignment="Left" Margin="399,2,0,2">
+                                <Separator.LayoutTransform>
+                                    <RotateTransform Angle="90"/>
+                                </Separator.LayoutTransform>
 
-                </Separator>
-                <StackPanel Grid.Column="2">
-                    <Label Content="Photos" HorizontalContentAlignment="Center" Height="40" Width="380" Foreground="#FFFFFF" FontSize="20" Margin="10,15,0,0"/>
-                </StackPanel>
-            </Grid>
-            <Border Grid.Row="1" Background="White"
-                CornerRadius="0,0,40,40"/>
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="0,1*"/>
-                    <ColumnDefinition Width="0,1*"/>
-                </Grid.ColumnDefinitions>
-                <ListView  Grid.Column="1" x:Name="sohbet" ItemsSource="{Binding ProfileUser.Tweets}"
+                            </Separator>
+                            <StackPanel Grid.Column="2">
+                                <Label Content="Photos" HorizontalContentAlignment="Center" Height="40" Width="380" Foreground="#FFFFFF" FontSize="20" Margin="10,15,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                        <Border Grid.Row="1"
+                CornerRadius="0,0,40,40">
+                            <Border.Background>
+                                <ImageBrush ImageSource="/Assets/globallayer1.png" Stretch="Fill"/>
+                            </Border.Background>
+                        </Border>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0,1*"/>
+                                <ColumnDefinition Width="0,1*"/>
+                            </Grid.ColumnDefinitions>
+                            <ListView  Grid.Column="1" x:Name="sohbet" ItemsSource="{Binding ProfileUser.Tweets}"
                       Background="Transparent"
                       BorderThickness="0"
                       ItemContainerStyle="{StaticResource TweetItem}"
@@ -92,9 +105,13 @@
                            Height="310"
                            Width="350"
                       Grid.Row="1" Grid.ColumnSpan="2"/>
-            </Grid>
-            
-        </Grid>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+            </Border>
+        </Border>
+        
     </Grid>
 
 </UserControl>

@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace JavaProject___Client
+namespace JavaProject___Client.MVVM.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

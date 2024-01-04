@@ -6,44 +6,109 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="Transparent" BorderBrush="Gray" BorderThickness="0,0,0,1">
-                        <StackPanel Orientation="Horizontal">
-                            <Border Width="30" Height="30"
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Resources>
+            <ControlTemplate x:Key="online">
+                <Border Background="Transparent" BorderBrush="Gray" BorderThickness="0,0,0,1">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="30" Height="30"
                                     Background="CornflowerBlue"
-                                    CornerRadius="25"/>
-
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Content="{Binding Username}"
+                                    CornerRadius="25">
+                            <Ellipse Width="8" Height="8"
+                                    Fill="Lime" 
+                                    Margin="15,20,0,0">
+                            </Ellipse>
+                        </Border>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Username}"
                                    Foreground="Black"
                                    FontWeight="SemiBold"
                                    VerticalAlignment="Center"
                                    Margin="2,-3,-5,0"/>
-                                </StackPanel>
-                                <StackPanel>
-                                    <Border Background="Transparent" BorderThickness="0">
-                                        <Border.InputBindings>
-                                            <MouseBinding Gesture="LeftClick" Command="{Binding GoToProfile}"/>
-                                        </Border.InputBindings>
-                                        <StackPanel>
-                                            <Icon:PackIconMaterial Margin="10,5,0,0" Kind="Account" Foreground="Gray" Width="10" Height="10"/>
-                                        </StackPanel>
-                                    </Border>
-                                    <Border Background="Transparent" BorderThickness="0">
-                                        <Border.InputBindings>
-                                            <MouseBinding Gesture="LeftClick" Command="{Binding FriendRemove}"/>
-                                        </Border.InputBindings>
-                                        <StackPanel>
-                                            <Icon:PackIconMaterial Margin="30,-10,0,0" Kind="AccountCancel" Foreground="Gray" Width="12" Height="12"/>
-                                        </StackPanel>
-                                    </Border>
-                                    <StackPanel Height="5"/>
-                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <Border Background="Transparent" BorderThickness="0">
+                                    <Border.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding GoToProfile}"/>
+                                    </Border.InputBindings>
+                                    <StackPanel>
+                                        <Icon:PackIconMaterial Margin="10,5,0,0" Kind="Account" Foreground="Gray" Width="10" Height="10"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="Transparent" BorderThickness="0">
+                                    <Border.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding FriendRemove}"/>
+                                    </Border.InputBindings>
+                                    <StackPanel>
+                                        <Icon:PackIconMaterial Margin="30,-10,0,0" Kind="AccountCancel" Foreground="Gray" Width="12" Height="12"/>
+                                    </StackPanel>
+                                </Border>
+                                <StackPanel Height="5"/>
                             </StackPanel>
                         </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+            <ControlTemplate x:Key="offline">
+                <Border Background="Transparent" BorderBrush="Gray" BorderThickness="0,0,0,1">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="30" Height="30"
+                                    Background="CornflowerBlue"
+                                    CornerRadius="25">
+                            <Ellipse Width="8" Height="8"
+                                    Fill="#EE5858" 
+                                    Margin="15,20,0,0">
+                            </Ellipse>
+                        </Border>
+
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Username}"
+                                   Foreground="Black"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Margin="2,-3,-5,0"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Border Background="Transparent" BorderThickness="0">
+                                    <Border.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding GoToProfile}"/>
+                                    </Border.InputBindings>
+                                    <StackPanel>
+                                        <Icon:PackIconMaterial Margin="10,5,0,0" Kind="Account" Foreground="Gray" Width="10" Height="10"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="Transparent" BorderThickness="0">
+                                    <Border.InputBindings>
+                                        <MouseBinding Gesture="LeftClick" Command="{Binding FriendRemove}"/>
+                                    </Border.InputBindings>
+                                    <StackPanel>
+                                        <Icon:PackIconMaterial Margin="30,-10,0,0" Kind="AccountCancel" Foreground="Gray" Width="12" Height="12"/>
+                                    </StackPanel>
+                                </Border>
+                                <StackPanel Height="5"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Style.Resources>
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Status}" Value="true" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Template" Value="{StaticResource online}"/>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Status}" Value="false" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Template" Value="{StaticResource offline}"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

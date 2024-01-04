@@ -60,6 +60,7 @@ namespace JavaProject___Client.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
+
         public ObservableCollection<UserModel> Friends
         {
             get
@@ -214,6 +215,29 @@ namespace JavaProject___Client.MVVM.ViewModel
             UserModel user = new UserModel(Navigation, DataService);
             user.Username = username;
             user.ownRequest = false;
+
+            var user2 = DataService.Users.Where(x => x.Username == username).FirstOrDefault();
+            if(user2 != null)
+            {
+                if (user2.Status == true)
+                {
+                    user.Status = true;
+                }
+                else if (user2.Status == false)
+                {
+                    user.Status = false;
+                }
+                else
+                {
+                    user.Status = false;
+                }
+            }
+            else
+            {
+                user.Status = false;
+            }
+            
+
             Application.Current.Dispatcher.Invoke(() =>
             {
                 FriendRequests.Add(user);
@@ -251,7 +275,14 @@ namespace JavaProject___Client.MVVM.ViewModel
             var username = _server.PacketReader.ReadMessage();
             Application.Current.Dispatcher.Invoke(() =>
             {
-                Friends.Remove(Friends.Where(o => o.Username == username).Single());
+                try
+                {
+                    Friends.Remove(Friends.Where(o => o.Username == username).Single());
+                }
+                catch
+                {
+
+                }
             });
         }
 
@@ -265,7 +296,30 @@ namespace JavaProject___Client.MVVM.ViewModel
                 var ownRequest = bool.Parse(_server.PacketReader.ReadMessage());
                 var state = bool.Parse(_server.PacketReader.ReadMessage());
                 UserModel user = new UserModel(Navigation, DataService);
+
+                var user2 = DataService.Users.Where(x => x.Username == username).FirstOrDefault();
+                if (user2!=null)
+                {
+                    if (user2.Status == true)
+                    {
+                        user.Status = true;
+                    }
+                    else if (user2.Status == false)
+                    {
+                        user.Status = false;
+                    }
+                    else
+                    {
+                        user.Status = false;
+                    }
+                }
+                else
+                {
+                    user.Status = false;
+                }
+                
                 user.Username = username;
+                
                 if (state == true)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
