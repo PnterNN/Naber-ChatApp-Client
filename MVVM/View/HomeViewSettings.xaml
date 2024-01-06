@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:JavaProject___Client.MVVM.View"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="625" d:DesignWidth="1200"
              Background="#2F3136">
@@ -24,6 +25,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -33,6 +35,7 @@
                             <ComboBox SelectedIndex="{Binding MicrophoneDevice}" x:Name="SettingsMicrophone" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10"  VerticalAlignment="Center"/>
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Center">Speaker Device</TextBlock>
                             <ComboBox SelectedIndex="{Binding SpeakerDevice}" x:Name="SettingsSpeaker" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" />
+                            <mah:RangeSlider Grid.Column="0" Grid.Row="2" Height="38" Margin="50,0,50,0" VerticalAlignment="Center"/>
                         </Grid>
                     </GroupBox>
                     <Button x:Name="Navigatetologin" 

@@ -3,6 +3,7 @@ using JavaProject___Client.NET;
 using JavaProject___Client.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,11 +26,29 @@ namespace JavaProject___Client.MVVM.ViewModel
             }
         }
 
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo("cache");
+            foreach (FileInfo file in di.GetFiles())
+            {
+                try
+                {
+                    file.Delete();
+                }
+                catch
+                {
+
+                }
+                
+            }
+        }
         public MainViewModel(INavigationService navService, IDataService dataservice)
         {
             DataService = dataservice;
             Navigation = navService;
             Navigation.NavigateTo<LoginViewModel>();
+
+            Application.Current.MainWindow.Closing += MainWindow_Closing;
         }
     }
 }

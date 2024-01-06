@@ -4,7 +4,6 @@ using Microsoft.VisualBasic.Devices;
 using NAudio.CoreAudioApi;
 using NAudio.Utils;
 using NAudio.Wave;
-using Plugin.SimpleAudioPlayer;
 using System;
 using System.Collections.Generic;
 using System.IO;

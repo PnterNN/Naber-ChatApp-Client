@@ -181,44 +181,96 @@ namespace JavaProject___Client.MVVM.ViewModel
             string dataUID = "";
             string dataImageSource = "";
             string dataMessage = "";
+            string dataVoice = "";
             DateTime dataTime = DateTime.Now;
             bool dataFirstMessage = true;
             string messageUID = "";
+            int index2 = 0;
             for (int i = 0; i < int.Parse(messageCount); i++)
             {
-                try
-                {
+                try { 
                     dataUsername = _server.PacketReader.ReadMessage();
                     dataUID = _server.PacketReader.ReadMessage();
                     dataImageSource = _server.PacketReader.ReadMessage();
                     dataMessage = _server.PacketReader.ReadMessage();
+                    dataVoice = _server.PacketReader.ReadMessage();
                     dataTime = DateTime.Parse(_server.PacketReader.ReadMessage());
                     dataFirstMessage = bool.Parse(_server.PacketReader.ReadMessage());
                     messageUID = _server.PacketReader.ReadMessage();
-                    if (dataUsername != null)
+                    Random random = new Random();
+                    int messageUID2 = int.Parse(messageUID) - random.Next(0,9999);
+                    int index = user.Messages.Count();
+                    if (dataVoice != "0")
                     {
-                        var ownMessage = false;
-                        if(dataUsername == DataService.Username)
+                        dekoder = new G729Decoder();
+                        string[] sesdizi = dataVoice.Split(',');
+                        List<byte> baytListe = new List<byte>();
+                        foreach (string deger in sesdizi)
                         {
-                            ownMessage = true;
+                            if (byte.TryParse(deger, out byte sonuc))
+                            {
+                                baytListe.Add(sonuc);
+                            }
+                            else
+                            {
+                            }
                         }
-                        user.Messages.Add(new MessageModel(Navigation, DataService)
+                        byte[] baytDizisi = baytListe.ToArray();
+                        byte[] baytDizisi2 = dekoder.Process(baytDizisi);
+
+                        WaveFormat waveFormat = new WaveFormat(44100, 1);
+                        waveWriter = new WaveFileWriter($"cache/{messageUID2}" + ".wav", waveFormat);
+                        waveWriter.Write(baytDizisi2, 0, baytDizisi2.Length);
+                        waveWriter.Close();
+                        _ = Task.Run(() =>
                         {
-                            Username = dataUsername,
-                            ImageSource = "",
-                            ownMessage = ownMessage,
-                            UsernameColor = "CornflowerBlue",
-                            Message = formattedString(dataMessage),
-                            UID = messageUID,
-                            Time = dataTime,
-                            FirstMessage = dataFirstMessage
+                            int _index = index;
+                            Task.Delay(1000).ContinueWith(_ =>
+                            {
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+
+                                    user.Messages.Insert(_index+index2, new MessageModel(Navigation, DataService)
+                                    {
+                                        Username = dataUsername,
+                                        ImageSource = "CornflowerBlue",
+                                        SoundName = $"{messageUID2}.wav",
+                                        Time = dataTime,
+                                        VoiceMessage = true,
+                                        State = "Play",
+                                        UID = messageUID2.ToString()
+                                    });
+                                });
+                                index2++;
+                            });
                         });
                     }
-
+                    else
+                    {
+                        if (dataUsername != null)
+                        {
+                            var ownMessage = false;
+                            if (dataUsername == DataService.Username)
+                            {
+                                ownMessage = true;
+                            }
+                            user.Messages.Insert(index,new MessageModel(Navigation, DataService)
+                            {
+                                Username = dataUsername,
+                                ImageSource = "",
+                                ownMessage = ownMessage,
+                                UsernameColor = "CornflowerBlue",
+                                Message = formattedString(dataMessage),
+                                UID = messageUID,
+                                Time = dataTime,
+                                FirstMessage = dataFirstMessage
+                            });
+                        }
+                    }
                 }
-                catch (Exception e)
+                catch
                 {
-                    MessageBox.Show(e.Message);
+
                 }
             }
             if (dataUsername == "")
@@ -234,6 +286,10 @@ namespace JavaProject___Client.MVVM.ViewModel
                     FirstMessage = true
                 });
             }
+
+
+
+
             if (!DataService.Users.Any(x => x.UID == user.UID))
             {
                 Application.Current.Dispatcher.Invoke(() => DataService.Users.Add(user));
