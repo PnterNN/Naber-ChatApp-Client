@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -64,15 +65,13 @@ namespace JavaProject___Server.NET.IO
                 source.SetLength(0);
             }
         }
-        public void WriteAudioMessage(byte[] msg, int startingIndex, int bytesRecorded)
+        public void WriteAudioMessage(byte[] audio)
         {
             lock (locker)
             {
-                var msgLength = msg.Length;
-
-                _ms.Write(BitConverter.GetBytes(msgLength), 0, BitConverter.GetBytes(msg.Length).Length);
-
-                _ms.Write(msg, 0, bytesRecorded);
+                int audioLength = audio.Length;
+                _ms.Write(BitConverter.GetBytes(audioLength), 0, BitConverter.GetBytes(audioLength).Length);
+                _ms.Write(audio, 0, audioLength);
             }
         }
 

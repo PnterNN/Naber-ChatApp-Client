@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows;
 using GroovyCodecs.Types;
 
 namespace GroovyCodecs.WavFile

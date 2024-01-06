@@ -32,11 +32,11 @@ namespace JavaProject___Client.MVVM.Model
             navigationService = navService;
             FriendAccept = new RelayCommand(o =>
             {
-                dataService.server.sendFriendAccept(Username);
                 foreach (var user in dataService.FriendRequests)
                 {
                     if (user.Username == Username)
                     {
+                        dataService.server.sendFriendAccept(user.Username);
                         dataService.Friends.Add(user);
                         dataService.FriendRequests.Remove(user);
                         return;
@@ -130,14 +130,22 @@ namespace JavaProject___Client.MVVM.Model
         {
             get 
             {
-                if (Messages.Last().Message.Length > 25)
+                if (Messages.Last().VoiceMessage != true)
                 {
-                    return Messages.Last().Message.Substring(0,25) + " ...";
+                    if (Messages.Last().Message.Length > 25)
+                    {
+                        return Messages.Last().Message.Substring(0, 25) + " ...";
+                    }
+                    else
+                    {
+                        return Messages.Last().Message;
+                    }
                 }
                 else
                 {
-                    return Messages.Last().Message;
+                    return "Sended Voice Message";
                 }
+                
             }
         }
     }

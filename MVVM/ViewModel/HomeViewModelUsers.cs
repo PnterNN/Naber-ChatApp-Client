@@ -19,9 +19,9 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using GroovyCodecs.G729;
-using NAudio.Wave;
 using NAudio.CoreAudioApi;
 using System.IO;
+using System.Windows.Shapes;
 
 namespace JavaProject___Client.MVVM.ViewModel
 {
@@ -134,6 +134,36 @@ namespace JavaProject___Client.MVVM.ViewModel
             }
         }
 
+        private void RegisterUserConnected()
+        {
+            string username = _server.PacketReader.ReadMessage();
+            string uid = _server.PacketReader.ReadMessage();
+            var user = new UserModel(Navigation, DataService)
+            {
+                Username = username,
+                ImageSource = "CornflowerBlue",
+                UID = uid,
+                Messages = new ObservableCollection<MessageModel>(),
+                Status = true
+            };
+
+            user.Messages.Add(new MessageModel(Navigation, DataService)
+            {
+                Username = "Naber",
+                ImageSource = "",
+                UsernameColor = "CornflowerBlue",
+                ownMessage = false,
+                Message = username + " Çevrimiçi oldu",
+                Time = DateTime.Now,
+                FirstMessage = true
+            });
+
+            if (!DataService.Users.Any(x => x.UID == user.UID))
+            {
+                Application.Current.Dispatcher.Invoke(() => DataService.Users.Add(user));
+            }
+        }
+
         private void UserConnected()
         {
             string username = _server.PacketReader.ReadMessage();
@@ -195,7 +225,7 @@ namespace JavaProject___Client.MVVM.ViewModel
             {
                 user.Messages.Add(new MessageModel(Navigation, DataService)
                 {
-                    Username = "ChatApp",
+                    Username = "Naber",
                     ImageSource = "",
                     UsernameColor = "CornflowerBlue",
                     ownMessage = false,
@@ -352,12 +382,13 @@ namespace JavaProject___Client.MVVM.ViewModel
         }
 
 
-        private void csvToWav()
+        private void csvToWav(string UID)
         {
+
             enkoder = new G729Encoder();
             dekoder = new G729Decoder();
 
-            StreamReader st = new StreamReader("test.csv");
+            StreamReader st = new StreamReader($"cache/{UID}.csv");
             string sesdos = st.ReadLine();
             st.Close();
             string[] sesdizi = sesdos.Split(',');
@@ -379,25 +410,24 @@ namespace JavaProject___Client.MVVM.ViewModel
             byte[] baytDizisi2 = dekoder.Process(baytDizisi);
 
             WaveFormat waveFormat = new WaveFormat(44100, 1);
-            waveWriter = new WaveFileWriter("test2.wav", waveFormat);
+            waveWriter = new WaveFileWriter($"cache/{UID}" +"-2"+ ".wav", waveFormat);
             waveWriter.Write(baytDizisi2, 0, baytDizisi2.Length);
             waveWriter.Close();
         }
 
-        private void wavToCsv()
+        private void wavToCsv(string UID)
         {
+
             enkoder = new G729Encoder();
             dekoder = new G729Decoder();
 
             var audioFile = new GroovyCodecs.WavFile.WavReader();
-            audioFile.OpenFile("test.wav");
-            var srcFormat = audioFile.GetFormat();
+            audioFile.OpenFile($"cache/{UID}.wav");
             var inBuffer = audioFile.readWav();
-
 
             byte[] baytdizi2 = enkoder.Process(inBuffer);
 
-            StreamWriter stwr = new StreamWriter("test.csv");
+            StreamWriter stwr = new StreamWriter($"cache/{UID}.csv");
             string sesdos = "";
             for (long sayac = 0; sayac < baytdizi2.Length; sayac++)
             {
@@ -406,6 +436,7 @@ namespace JavaProject___Client.MVVM.ViewModel
             sesdos = sesdos + "B";
             stwr.Write(sesdos);
             stwr.Close();
+
         }
 
         private void OnDataAvailable(object sender, WaveInEventArgs e)
@@ -416,6 +447,50 @@ namespace JavaProject___Client.MVVM.ViewModel
             }
         }
 
+        private void byteToVoice(byte[] voice, string UID)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                dekoder = new G729Decoder();
+                byte[] baytDizisi2 = dekoder.Process(voice);
+                WaveFormat waveFormat = new WaveFormat(44100, 1);
+                using (waveWriter = new WaveFileWriter($"cache/{UID}.wav", waveFormat))
+                {
+                    waveWriter.Write(baytDizisi2, 0, baytDizisi2.Length);
+                    waveWriter.Close();
+                }
+            });
+        }
+        private void VoiceMessageReceived()
+        {
+            byte[] voice = _server.PacketReader.ReadAudioMessage();
+            var messageUID = _server.PacketReader.ReadMessage();
+            var contactUID = _server.PacketReader.ReadMessage();
+            int messageUID2 = int.Parse(messageUID) + 1;
+            byteToVoice(voice, messageUID2.ToString());
+            var user = DataService.Users.Where(x => x.UID == contactUID).FirstOrDefault();
+            if (user != null)
+            {
+                _ = Task.Run(() =>
+                {
+                    Task.Delay(1000).Wait();
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        
+                        user.Messages.Add(new MessageModel(Navigation, DataService)
+                        {
+                            Username = user.Username,
+                            ImageSource = "CornflowerBlue",
+                            SoundName = $"{messageUID2}.wav",
+                            Time = DateTime.Now,
+                            VoiceMessage = true,
+                            State = "Play",
+                            UID = messageUID2.ToString()
+                        });
+                    });
+                });
+            }
+        }
 
         public HomeViewModelUsers(INavigationService navService, IDataService dataservice)
         {
@@ -440,6 +515,7 @@ namespace JavaProject___Client.MVVM.ViewModel
                 Application.Current.Shutdown();
             });
 
+            string messageUID = "";
             VoiceButtonCommand = new RelayCommand(o =>
             {
                 if (VoiceButtonContent == "Start Voice")
@@ -447,6 +523,8 @@ namespace JavaProject___Client.MVVM.ViewModel
                     VoiceButtonContent = "Stop Voice";
                     VoiceButtonColor = "#BE3144";
 
+                    Random random = new Random();
+                    messageUID = random.Next(100000000, 999999999).ToString();
 
                     var enumerator = new MMDeviceEnumerator();
                     var device = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ElementAt(DataService.MicrophoneDevice);
@@ -455,7 +533,8 @@ namespace JavaProject___Client.MVVM.ViewModel
                     WaveFormat waveFormat = new WaveFormat(44100, 1);
                     waveIn.WaveFormat = waveFormat;
                     waveIn.DataAvailable += OnDataAvailable;
-                    waveWriter = new WaveFileWriter("test.wav", waveFormat);
+                    Directory.CreateDirectory(System.IO.Path.GetDirectoryName("cache/"));
+                    waveWriter = new WaveFileWriter($"cache/{messageUID}.wav", waveFormat);
                     waveIn.StartRecording();
 
                 }
@@ -469,12 +548,38 @@ namespace JavaProject___Client.MVVM.ViewModel
                     waveWriter.Close();
                     waveWriter = null;
                     waveIn.Dispose();
-                    wavToCsv();
+                    _ = Task.Run(() => 
+                    {
+                        Task.Delay(1000).Wait();
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            if (_selectedUser != null)
+                            {
+                                _selectedUser.Messages.Add(new MessageModel(Navigation, DataService)
+                                {
+                                    Username = Username,
+                                    ImageSource = "CornflowerBlue",
+                                    SoundName = $"{messageUID}.wav",
+                                    Time = DateTime.Now,
+                                    VoiceMessage = true,
+                                    State = "Play",
+                                    UID = messageUID
+                                });
+                            }
+                        });
+                    });
 
                     Task.Delay(1000).Wait();
-                    csvToWav();
-                }
 
+
+                    enkoder = new G729Encoder();
+                    var audioFile = new GroovyCodecs.WavFile.WavReader();
+                    audioFile.OpenFile($"cache/{messageUID}.wav");
+                    var inBuffer = audioFile.readWav();
+                    byte[] audio = enkoder.Process(inBuffer);
+                    _server.sendVoiceMessage(audio, messageUID, _selectedUser.UID);
+
+                }
             });
 
             NavigateToProfile = new RelayCommand(o =>
@@ -497,48 +602,50 @@ namespace JavaProject___Client.MVVM.ViewModel
 
 
             SendMessageCommand = new RelayCommand(o =>
+            {
+                if (!string.IsNullOrEmpty(Message))
                 {
-                    if (!string.IsNullOrEmpty(Message))
+                    if (_selectedUser != null)
                     {
-                        if (_selectedUser != null)
+                        Random random = new Random();
+                        int messageUID = random.Next(100000000, 999999999);
+                        bool FirstMessage = false;
+                        if (_selectedUser.Messages.Count > 0)
                         {
-                            Random random = new Random();
-                            int messageUID = random.Next(100000000, 999999999);
-                            bool FirstMessage = false;
-                            if (_selectedUser.Messages.Count > 0)
-                            {
-                                if (_selectedUser.LastMessage.Username != dataservice.Username)
-                                {
-                                    FirstMessage = true;
-                                }
-                            }
-                            else
+                            if (_selectedUser.LastMessage.Username != dataservice.Username)
                             {
                                 FirstMessage = true;
                             }
-                            SelectedUser.Messages.Add(new MessageModel(Navigation, DataService)
-                            {
-                                Username = dataservice.Username,
-                                ImageSource = "",
-                                UID = messageUID.ToString(),
-                                ownMessage = true,
-                                UsernameColor = "CornflowerBlue",
-                                Message = formattedString(Message),
-                                Time = DateTime.Now,
-                                FirstMessage = FirstMessage
-                            });
-                            _server.SendMessage(Message, SelectedUser.UID, FirstMessage.ToString(), messageUID.ToString());
                         }
-                        Message = "";
-                        OnPropertyChanged("LastMessageText");
+                        else
+                        {
+                            FirstMessage = true;
+                        }
+                        SelectedUser.Messages.Add(new MessageModel(Navigation, DataService)
+                        {
+                            Username = dataservice.Username,
+                            ImageSource = "",
+                            UID = messageUID.ToString(),
+                            ownMessage = true,
+                            UsernameColor = "CornflowerBlue",
+                            Message = formattedString(Message),
+                            Time = DateTime.Now,
+                            FirstMessage = FirstMessage
+                        });
+                        _server.SendMessage(Message, SelectedUser.UID, FirstMessage.ToString(), messageUID.ToString());
                     }
-                });
+                    Message = "";
+                    OnPropertyChanged("LastMessageText");
+                }
+            });
 
-                _server.UserConnectedEvent += UserConnected;
-                _server.MessageReceivedEvent += MessageReceived;
-                _server.UserDisconnectedEvent += UserDisconnected;
-                _server.GroupCreatedEvent += createGroup;
-                _server.DeleteMessageEvent += deleteMessage;
+            _server.UserConnectedEvent += UserConnected;
+            _server.MessageReceivedEvent += MessageReceived;
+            _server.UserDisconnectedEvent += UserDisconnected;
+            _server.GroupCreatedEvent += createGroup;
+            _server.DeleteMessageEvent += deleteMessage;
+            _server.userRegisterConnectedEvent += RegisterUserConnected;
+            _server.VoiceMessageReceivedEvent += VoiceMessageReceived;
         }
     }
 }

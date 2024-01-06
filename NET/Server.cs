@@ -20,8 +20,10 @@ namespace JavaProject___Client.NET
     {
         //Serverdan gelen paketleri dinlemek için eventler
         public event Action UserConnectedEvent;
+        public event Action userRegisterConnectedEvent;
         public event Action UserDisconnectedEvent;
         public event Action MessageReceivedEvent;
+        public event Action VoiceMessageReceivedEvent;
 
         public event Action TweetReceivedEvent;
         public event Action GetTweetsEvent;
@@ -65,7 +67,7 @@ namespace JavaProject___Client.NET
             {
                 try
                 {
-                    _client.Connect("46.31.77.173", 9001);//46.31.77.173
+                    _client.Connect("127.0.0.1", 9001);//46.31.77.173
                 }
                 catch
                 {
@@ -91,7 +93,7 @@ namespace JavaProject___Client.NET
             {
                 try
                 {
-                    _client.Connect("46.31.77.173", 9001);//46.31.77.173
+                    _client.Connect("127.0.0.1", 9001);//46.31.77.173
                 }
                 catch
                 {
@@ -123,22 +125,24 @@ namespace JavaProject___Client.NET
         {
             Task.Run(() =>
             {
-                while (true)
+            while (true)
+            {
+                try
                 {
-                    try
+                    // opcode
+                    // 0 - register
+                    // 1 - login
+                    // 2 - info
+                    // 3 - new connection
+                    // 4 - disconnect
+                    // 5 - message
+                    // 6 - group created
+                    var opcode = PacketReader.ReadByte();
+                    switch (opcode)
                     {
-                        // opcode
-                        // 0 - register
-                        // 1 - login
-                        // 2 - info
-                        // 3 - new connection
-                        // 4 - disconnect
-                        // 5 - message
-                        // 6 - group created
-                        var opcode = PacketReader.ReadByte();
-                        switch (opcode)
-                        {
-                            case 0:
+                        case 0:
+                            try
+                            {
                                 var registerSuccess = PacketReader.ReadMessage();
                                 if (registerSuccess == "True")
                                 {
@@ -148,77 +152,87 @@ namespace JavaProject___Client.NET
                                 {
                                     RegisterFailEvent?.Invoke();
                                 }
-                                break;
-                            case 1:
-                                var loginSuccess = PacketReader.ReadMessage();
-                                if (loginSuccess == "True")
-                                {
-                                    LoginCorrectEvent?.Invoke();
-                                }
-                                else
-                                {
-                                    LoginFailEvent?.Invoke();
-                                }
-                                break;
-                            case 2:
-                                Username = PacketReader.ReadMessage();
-                                UID = PacketReader.ReadMessage();
-                                break;
-                            case 3:
-                                UserConnectedEvent?.Invoke();
-                                break;
-                            case 4:
-                                UserDisconnectedEvent?.Invoke();
-                                break;
-                            case 5:
-                                MessageReceivedEvent?.Invoke();
-                                break;
-                            case 6:
-                                GroupCreatedEvent?.Invoke();
-                                break;
-                            case 7:
-                                DeleteMessageEvent?.Invoke();
-                                break;
-                            case 8:
-                                MicMutedEvent?.Invoke();
-                                break;
-                            case 10:
-                                TooManyPacketsEvent?.Invoke();
-                                break;
-                            case 11:
-                                LikeEvent?.Invoke();
-                                break;
-                            case 12:
-                                TweetReceivedEvent?.Invoke();
-                                break;
-                            case 13:
-                                GetTweetsEvent?.Invoke();
-                                break;
-                            case 14:
-                                DeleteTweetEvent?.Invoke();
-                                break;
-                            case 15:
-                                FriendRequestEvent?.Invoke();
-                                break;
-                            case 16:
-                                FriendRequestCancelEvent?.Invoke();
-                                break;
-                            case 17:
-                                FriendRequestAcceptEvent?.Invoke();
-                                break;
-                            case 18:
-                                MessageBox.Show("Arkadaşlık isteğiniz reddedildi");
-                                FriendRequestDeclineEvent?.Invoke();
-                                break;
-                            case 19:
-                                FriendRemoveEvent?.Invoke();
-                                break;
-                            case 20:
-                                getFriendEvent?.Invoke();
-                                break;
-                            default:
-                                Console.WriteLine("Unknown opcode: " + opcode);
-                                break;
+                            }
+                            catch
+                            {
+                            }
+                            break;
+                        case 1:
+                            var loginSuccess = PacketReader.ReadMessage();
+                            if (loginSuccess == "True")
+                            {
+                                LoginCorrectEvent?.Invoke();
+                            }
+                            else
+                            {
+                                LoginFailEvent?.Invoke();
+                            }
+                            break;
+                        case 2:
+                            Username = PacketReader.ReadMessage();
+                            UID = PacketReader.ReadMessage();
+                            break;
+                        case 3:
+                            UserConnectedEvent?.Invoke();
+                            break;
+                        case 4:
+                            UserDisconnectedEvent?.Invoke();
+                            break;
+                        case 5:
+                            MessageReceivedEvent?.Invoke();
+                            break;
+                        case 6:
+                            GroupCreatedEvent?.Invoke();
+                            break;
+                        case 7:
+                            DeleteMessageEvent?.Invoke();
+                            break;
+                        case 8:
+                            MicMutedEvent?.Invoke();
+                            break;
+                        case 10:
+                            TooManyPacketsEvent?.Invoke();
+                            break;
+                        case 11:
+                            LikeEvent?.Invoke();
+                            break;
+                        case 12:
+                            TweetReceivedEvent?.Invoke();
+                            break;
+                        case 13:
+                            GetTweetsEvent?.Invoke();
+                            break;
+                        case 14:
+                            DeleteTweetEvent?.Invoke();
+                            break;
+                        case 15:
+                            FriendRequestEvent?.Invoke();
+                            break;
+                        case 16:
+                            FriendRequestCancelEvent?.Invoke();
+                            break;
+                        case 17:
+                            FriendRequestAcceptEvent?.Invoke();
+                            break;
+                        case 18:
+                            MessageBox.Show("Arkadaşlık isteğiniz reddedildi");
+                            FriendRequestDeclineEvent?.Invoke();
+                            break;
+                        case 19:
+                            FriendRemoveEvent?.Invoke();
+                            break;
+                        case 20:
+                            getFriendEvent?.Invoke();
+                            break;
+                        case 21:
+                            userRegisterConnectedEvent?.Invoke();
+                            break;
+                        case 22:
+                            VoiceMessageReceivedEvent?.Invoke();
+                            break;
+                        default:
+                            Console.WriteLine("Unknown opcode: " + opcode);
+                            break;
                         }
                     }
                     catch(Exception e)
@@ -231,6 +245,15 @@ namespace JavaProject___Client.NET
             });
         }
 
+        public void sendVoiceMessage(byte[] audio, string UID, string ContactUID)
+        {
+            var packet = new PacketBuilder();
+            packet.WriteOpCode(22);
+            packet.WriteAudioMessage(audio);
+            packet.WriteMessage(UID);
+            packet.WriteMessage(ContactUID);
+            _client.Client.Send(packet.GetPacketBytes());
+        }
         public void sendFriendRemove(string username)
         {
 
@@ -241,7 +264,6 @@ namespace JavaProject___Client.NET
         }
         public void sendFriendDecline(string username)
         {
-            MessageBox.Show("Arkadaşlık isteğiniz gönderildi");
             var packet = new PacketBuilder();
             packet.WriteOpCode(18);
             packet.WriteMessage(username);

@@ -256,7 +256,10 @@ namespace JavaProject___Client.MVVM.ViewModel
             var username = _server.PacketReader.ReadMessage();
             Application.Current.Dispatcher.Invoke(() =>
             {
-                Friends.Add(FriendRequests.Where(o => o.Username == username).Single());
+                UserModel user = new UserModel(Navigation, DataService);
+                user.Username = username;
+                user.Status = true;
+                Friends.Add(user);
                 FriendRequests.Remove(FriendRequests.Where(o => o.Username == username).Single());
             });
         }

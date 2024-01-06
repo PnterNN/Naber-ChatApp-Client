@@ -25,16 +25,13 @@ namespace JavaProject___Server.NET.IO
 
         public byte[] ReadAudioMessage()
         {
-
             byte[] msgBuffer;
-
             var length = ReadInt32();
-
             msgBuffer = new byte[length];
-
-            var a = _ns.Read(msgBuffer, 0, length);
-
-            return msgBuffer;
+            var opa = _ns.Read(msgBuffer, 0, length);
+            byte[] copiedBuffer = new byte[opa];
+            Array.Copy(msgBuffer, 0, copiedBuffer, 0, opa);
+            return copiedBuffer;
         }
 
     }
