@@ -29,17 +29,16 @@ namespace JavaProject___Client.MVVM.ViewModel
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             System.IO.DirectoryInfo di = new DirectoryInfo("cache");
-            foreach (FileInfo file in di.GetFiles())
+            try
             {
-                try
+                foreach (FileInfo file in di.GetFiles())
                 {
-                    file.Delete();
+                        file.Delete();
                 }
-                catch
-                {
+            }
+            catch
+            {
 
-                }
-                
             }
         }
         public MainViewModel(INavigationService navService, IDataService dataservice)
@@ -47,6 +46,10 @@ namespace JavaProject___Client.MVVM.ViewModel
             DataService = dataservice;
             Navigation = navService;
             Navigation.NavigateTo<LoginViewModel>();
+
+            if (!System.IO.Directory.Exists("cache/"))
+                System.IO.Directory.CreateDirectory("cache/");
+
 
             Application.Current.MainWindow.Closing += MainWindow_Closing;
         }
