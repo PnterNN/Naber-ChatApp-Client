@@ -235,6 +235,7 @@ namespace JavaProject___Client.MVVM.ViewModel
                                         Username = dataUsername,
                                         ImageSource = "CornflowerBlue",
                                         SoundName = $"{messageUID2}.wav",
+                                        UsernameColor = "CornflowerBlue",
                                         Time = dataTime,
                                         VoiceMessage = true,
                                         State = "Play",
@@ -615,6 +616,7 @@ namespace JavaProject___Client.MVVM.ViewModel
                                 {
                                     Username = Username,
                                     ImageSource = "CornflowerBlue",
+                                    UsernameColor = "CornflowerBlue",
                                     SoundName = $"{messageUID}.wav",
                                     Time = DateTime.Now,
                                     VoiceMessage = true,
