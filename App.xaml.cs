@@ -2,7 +2,7 @@
 using JavaProject___Client.MVVM.View;
 using JavaProject___Client.MVVM.ViewModel;
 using JavaProject___Client.Services;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;     
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,7 +18,7 @@ namespace JavaProject___Client
     /// </summary>
     public partial class App : Application
     {
-        private readonly ServiceProvider _serviceProvider;
+        public readonly ServiceProvider _serviceProvider;
         public App()
         {
             IServiceCollection services = new ServiceCollection();
@@ -26,8 +26,8 @@ namespace JavaProject___Client
             {
                 DataContext = provider.GetRequiredService<MainViewModel>()
             });
-            services.AddSingleton<MainViewModel>();
 
+            services.AddSingleton<MainViewModel>();
 
             services.AddSingleton<LoginViewModel>();
             services.AddSingleton<RegisterViewModel>();
@@ -37,6 +37,7 @@ namespace JavaProject___Client
             services.AddSingleton<HomeViewModelTweet>();
             services.AddSingleton<HomeViewModelProfile>();
             services.AddSingleton<HomeViewModelUsers>();
+            
 
             services.AddSingleton<IDataService, DataService>();
             services.AddSingleton<INavigationService, NavigationService>();
@@ -51,7 +52,6 @@ namespace JavaProject___Client
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
             base.OnStartup(e);
-                        
         }
     }
 }

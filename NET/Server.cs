@@ -67,7 +67,7 @@ namespace JavaProject___Client.NET
             {
                 try
                 {
-                    _client.Connect("127.0.0.1", 9001);//46.31.77.173
+                    _client.Connect("212.68.34.241", 9001);//212.68.34.241
                 }
                 catch
                 {
@@ -93,7 +93,7 @@ namespace JavaProject___Client.NET
             {
                 try
                 {
-                    _client.Connect("127.0.0.1", 9001);//46.31.77.173
+                    _client.Connect("212.68.34.241", 9001);//46.31.77.173
                 }
                 catch
                 {
@@ -229,6 +229,9 @@ namespace JavaProject___Client.NET
                             break;
                         case 22:
                             VoiceMessageReceivedEvent?.Invoke();
+                            break;
+                        case 23:
+                            Application.Current.Dispatcher.Invoke(() => Application.Current.Shutdown());
                             break;
                         default:
                             Console.WriteLine("Unknown opcode: " + opcode);

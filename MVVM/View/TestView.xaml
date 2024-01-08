@@ -7,63 +7,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
-             d:DesignHeight="625" d:DesignWidth="1200">
+             
+             d:DesignHeight="125" d:DesignWidth="500">
     <Grid>
-        <Border CornerRadius="0,0,10,10" 
-            BorderBrush="#ebedf3"
-            Padding="20">
-            <Border.Background>
-                <ImageBrush ImageSource="/Assets/Loginbackground.png" Stretch="Fill"/>
-            </Border.Background>
-            <Border CornerRadius="10">
-                <Border.Background>
-                    <ImageBrush ImageSource="/Assets/globallayer1.png" Stretch="Fill"/>
-                </Border.Background>
-    
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Border Width="30" Height="30"
-                                    Background="CornflowerBlue"
-                                    CornerRadius="25"/>
-                        <Border Height="40" Width="200"
-                                    CornerRadius="10"
-                                    Margin="5,0,0,0"
-                                    Background="#4E72AB"
-                                    HorizontalAlignment="Left">
-                            <StackPanel>
-                                <Button Height="20" Width="20" Style="{StaticResource menuButton}" Background="#3F5C8A" Command="{Binding SoundCommand}" Margin="-160,10,0,0">
-                                    <Icon:PackIconMaterial Kind="{Binding SoundButton}" Style="{StaticResource menuButtonIcon}"/>
-                                </Button>
-                                <Label Height="20" Width="150"
-                                        Margin="22,-20,0,0"
-                                        VerticalContentAlignment="Center"
-                                        Content="{Binding SoundName}"
-                                           FontSize="10"/>
-                            </StackPanel>
-                        </Border>
-                        <StackPanel Orientation="Horizontal" Margin="-200,-10,0,0">
-                            <Label Content="{Binding Username}"
-                                   Foreground="{Binding UsernameColor}"
-                                   FontWeight="SemiBold"
-                                   VerticalAlignment="Center"
-                                   Margin="0,-50,-5,0"/>
-
-                            <Label Content="{Binding Time}"
-                                   Foreground="#44474D"
-                                   FontWeight="SemiBold"
-                                   FontSize="8"
-                                   Margin="0,-50,0,0"
-                                   VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </Border>
-        </Border>
+        
     </Grid>
 </UserControl>

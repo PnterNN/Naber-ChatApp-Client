@@ -53,6 +53,13 @@
                                            FontWeight="Bold"
                                            Margin="60,-40,5,0"
                                            VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+                                    <Button IsEnabled="False" Margin="550,-45,0,0"  Style="{StaticResource menuButton}" Background="#3F5C8A" Command="{Binding NavigateToTweet}">
+                                        <Icon:PackIconMaterial Kind="Phone" Style="{StaticResource menuButtonIcon}"/>
+                                    </Button>
+                                    <Button IsEnabled="False" Margin="700,-49,0,0"  Style="{StaticResource menuButton}" Background="#BE3144" Command="{Binding NavigateToTweet}">
+                                        <Icon:PackIconMaterial Kind="Cancel" Style="{StaticResource menuButtonIcon}"/>
+                                    </Button>
+                                    
                                 </StackPanel>
                             </Border>
                         </Grid>

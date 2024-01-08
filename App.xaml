@@ -5,8 +5,6 @@
              xmlns:viewModel="clr-namespace:JavaProject___Client.MVVM.ViewModel"
              xmlns:view="clr-namespace:JavaProject___Client.MVVM.View"
              xmlns:themes="clr-namespace:JavaProject___Client.Themes">
-
-
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,16 +24,12 @@
                 <ResourceDictionary Source="./Themes/ContactCard.xaml"/>
                 <ResourceDictionary Source="./Themes/ChatItem.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
             <DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
                 <view:LoginView/>
             </DataTemplate>
-
             <DataTemplate DataType="{x:Type viewModel:TestViewModel}">
                 <view:TestView/>
             </DataTemplate>
-
-
             <DataTemplate DataType="{x:Type viewModel:RegisterViewModel}">
                 <view:RegisterView/>
             </DataTemplate>
@@ -51,14 +45,9 @@
             <DataTemplate DataType="{x:Type viewModel:HomeViewModelTweet}">
                 <view:HomeViewTweet/>
             </DataTemplate>
-            
-            
-
             <DataTemplate DataType="{x:Type viewModel:HomeViewModelSettings}">
                 <view:HomeViewSettings/>
             </DataTemplate>
-
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

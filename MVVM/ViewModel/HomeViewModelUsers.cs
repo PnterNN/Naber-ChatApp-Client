@@ -22,6 +22,8 @@ using GroovyCodecs.G729;
 using NAudio.CoreAudioApi;
 using System.IO;
 using System.Windows.Shapes;
+using JavaProject___Client.MVVM.View;
+using GroovyCodecs.WavFile;
 
 namespace JavaProject___Client.MVVM.ViewModel
 {
@@ -476,9 +478,7 @@ namespace JavaProject___Client.MVVM.ViewModel
         {
 
             enkoder = new G729Encoder();
-            dekoder = new G729Decoder();
-
-            var audioFile = new GroovyCodecs.WavFile.WavReader();
+            var audioFile = new WavReader();
             audioFile.OpenFile($"cache/{UID}.wav");
             var inBuffer = audioFile.readWav();
 
@@ -557,6 +557,7 @@ namespace JavaProject___Client.MVVM.ViewModel
             _server = dataservice.server;
             Username = dataservice.Username;
             UID = dataservice.UID;
+
 
             VoiceButtonContent = "Start Voice";
             VoiceButtonColor = "#4E72AB";
